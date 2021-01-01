@@ -16,6 +16,10 @@ public class DIYArrayList<E> implements List<E> {
 
     private static final Object[] EMPTY_BASE = {};
 
+    private static final int DEFAULT_CAPACITY = 10;
+
+    public static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
+
     private int size = 0;
 
     transient Object[] innerDIYBase;
@@ -42,10 +46,40 @@ public class DIYArrayList<E> implements List<E> {
     @Override
     public boolean add(E e) {
         int s = innerDIYBase.length;
-        innerDIYBase = Arrays.copyOf(innerDIYBase, s + 1);
-        innerDIYBase[s] = e;
-        size = s + 1;
+        if (s == size) {
+//        System.out.println("length = "+size);
+            innerDIYBase = grow(s + 1);
+//        System.out.println("new length = "+innerDIYBase.length);
+        }
+        innerDIYBase[size] = e;
+        size += 1;
         return true;
+    }
+
+    private Object[] grow (int minCapacity) {
+        int oldCapacity = innerDIYBase.length;
+        if (oldCapacity > 0) {
+            int newCapacity = newLength(oldCapacity,
+                    minCapacity - oldCapacity, /* minimum growth */
+                    oldCapacity /* preferred growth */);
+            return innerDIYBase = Arrays.copyOf(innerDIYBase,
+                    newCapacity);
+        } else {
+            return innerDIYBase = new Object[Math.max(DEFAULT_CAPACITY,
+                    minCapacity)];
+        }
+    }
+
+    public static int newLength(int oldLength, int minGrowth, int
+            prefGrowth) {
+        // assert oldLength >= 0
+        // assert minGrowth > 0
+
+        int newLength = Math.max(minGrowth, prefGrowth) + oldLength;
+        if (newLength - MAX_ARRAY_LENGTH <= 0) {
+            return newLength;
+        }
+        return MAX_ARRAY_LENGTH;
     }
 
     @Override
