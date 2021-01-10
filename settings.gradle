@@ -3,3 +3,4 @@
  */
 rootProject.name = 'otus-Java-2020-09-Biglov'
 include 'hw-gradle'
+include 'hw03-generics'
