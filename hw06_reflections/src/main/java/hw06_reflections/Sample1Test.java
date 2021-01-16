@@ -10,7 +10,7 @@ public class Sample1Test {
 
     @Test
     public void method1Test(){
-        System.out.println("Testing method1");
+        System.out.println("\nTesting method1");
         Sample1 instance=new Sample1(1.0);
         try{instance.method1(0.6);
         }
@@ -20,7 +20,7 @@ public class Sample1Test {
 
     @Test
     public void method2Test(){
-        System.out.println("Testing method2");
+        System.out.println("\nTesting method2");
         Sample1 instance=new Sample1(1.0);
         try{instance.method2(0.4);
         }
@@ -29,7 +29,7 @@ public class Sample1Test {
     }
     @Test
     public void getFieldTest(){
-        System.out.println("Testing getField method");
+        System.out.println("\nTesting getField method");
         double field=1.0;
         double result=0;
         Sample1 instance=new Sample1(field);
@@ -45,7 +45,7 @@ public class Sample1Test {
 
     @After
     public void tearDown(){
-        System.out.println("Finished testing ");
+        System.out.println("Finished testing");
     }
 
 

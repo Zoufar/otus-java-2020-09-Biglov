@@ -22,41 +22,37 @@ public class TestFrame {
         Arrays.stream(methodsAll).
                 forEach(method -> System.out.println(method.getName()));
 
-        List<Method> methodsBefore = new ArrayList<>();
-        List<Method> methodsAfter = new ArrayList<>();
-        List<Method> methodsTest = new ArrayList<>();
-        methodsBefore = Arrays.stream(methodsAll).
-                filter(method -> method.getDeclaredAnnotation(Before.class) != null).
-                collect(Collectors.toList());
-        methodsAfter = Arrays.stream(methodsAll).
-                filter(method -> method.getDeclaredAnnotation(After.class) != null).
-                collect(Collectors.toList());
-        methodsTest = Arrays.stream(methodsAll).
-                filter(method -> method.getDeclaredAnnotation(Test.class) != null).
-                collect(Collectors.toList());
+
+        List <Class> cl=Arrays.asList(Before.class, Test.class, After.class);
+        List <List<Method>> methodsSort = new ArrayList<>();
+        methodsSort = cl.stream().map(cl1->Arrays.stream(methodsAll).
+                filter(method -> method.getDeclaredAnnotation(cl1)!=null).
+                collect(Collectors.toList())).collect(Collectors.toList());
+        System.out.println("\n--- all methods  sorted:");
+        methodsSort.stream().forEach(list ->System.out.println(list));
 
         var constr = clazz.getConstructor();
         int nOK = 0, nExcptn = 0;
 
-        for (var methodTest : methodsTest) {
-            var objForTest = constr.newInstance();
-            String str = "method   " + methodTest.getName() + " called";
+        for(var methodTest:methodsSort.get(1)) {
+            var obj = constr.newInstance();
+            String str="\nmethod   " + methodTest.getName() + " called";
 
-            for (var methodBefore : methodsBefore) {
-                var objForBefore = constr.newInstance();
-                callMethod(objForBefore, methodBefore.getName());
-            }
+            for(var methodBefore:methodsSort.get(0)){
+                var objForBefore  = constr.newInstance();
+                callMethod(objForBefore, methodBefore.getName());}
+
             try {
-                callMethod(objForTest, methodTest.getName());
+                callMethod(obj, methodTest.getName());
                 nOK += 1;
-            } catch (RuntimeException e) {
+            }
+            catch (RuntimeException e) {
                 nExcptn += 1;
                 System.out.println("method   " + methodTest.getName() + " called with exception");
             }
-            for (var methodAfter : methodsAfter) {
-                var objForAfter = constr.newInstance();
-                callMethod(objForAfter, methodAfter.getName());
-            }
+            for(var methodAfter:methodsSort.get(2)){
+                var objForAfter  = constr.newInstance();
+                callMethod(objForAfter, methodAfter.getName());}
         }
         System.out.println("\n\n total number of methods tested = " + (nOK + nExcptn) + "\n number of OK calls = " + nOK + "\n number of Exception calls = " + nExcptn);
     }
@@ -75,5 +71,6 @@ public class TestFrame {
     public static Class<?>[] toClasses(Object[] args) {
         return Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
     }
+
 
 }
