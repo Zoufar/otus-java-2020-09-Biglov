@@ -1,15 +1,17 @@
 package hw12_ATM;
 
 public class Cell {
-    int denominationNumber;
-    int quantity;
+    private final int DENOMINATION_NUMBER;
+    private int quantity;
 
     public Cell(int denominationNumber, int quantity) {
-        this.denominationNumber = denominationNumber;
+        this.DENOMINATION_NUMBER = denominationNumber;
         this.quantity = quantity;
     }
 
-    public int getQuantity(){ return this.quantity; }
+    public int getQuantity(){
+        int quant=this.quantity;
+        return quant; }
 
     public void setQuantity(int q) {
         if (q >= 0) {
@@ -23,7 +25,7 @@ public class Cell {
         if (quantity + q >= 0) {
             quantity += q;
         } else {
-            throw new RuntimeException("addCellQtty Added negative to big");
+            throw new RuntimeException("addCellQtty tried to add negative to big");
         }
     }
 }
