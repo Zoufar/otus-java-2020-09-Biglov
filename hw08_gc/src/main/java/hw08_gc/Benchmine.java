@@ -8,6 +8,7 @@ class Benchmine implements BenchmineMBean {
     private final int loopCounter;
     private final int gotOut;
     private volatile int size = 0;
+    public static long cycle =0L;
 
 
     public Benchmine(int loopCounter, int gotOut) {
@@ -15,15 +16,16 @@ class Benchmine implements BenchmineMBean {
         this.gotOut = gotOut;
     }
 
-    void run() throws InterruptedException {
+    void run() throws OutOfMemoryError, InterruptedException {
         List<String> garbageGenerator = new ArrayList<>();
         for (int idx = 0; idx < loopCounter; idx++) {
+            cycle +=1L;
             int local = size;
             for (int i = 0; i < local; i++) {
                 garbageGenerator.add(new String(new char[0]));
             }
             for (int k=0;k<gotOut;k++){
-            garbageGenerator.remove(garbageGenerator.size()-1);
+                garbageGenerator.remove(garbageGenerator.size()-1);
             }
             Thread.sleep(100); //Label_1
         }
