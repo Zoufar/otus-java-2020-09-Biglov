@@ -17,7 +17,7 @@ idea {
 }
 
 allprojects {
-    group "otus-Java-2020-09-Biglov"
+    group "otus-java-2020-09-Biglov"
 
     repositories {
         mavenCentral()
@@ -25,19 +25,45 @@ allprojects {
 
     apply plugin: "io.spring.dependency-management"
     dependencyManagement {
-        dependencies {
+        dependencies{
+            imports {
+                mavenBom("org.springframework.boot:spring-boot-dependencies:2.4.1")
+            }
             dependency("com.google.guava:guava:${Versions.guava}")
-            dependency("org.junit.jupiter:junit-jupiter-api:${Versions.jupiterApi}")
-            dependency("org.junit.jupiter:junit-jupiter-engine:${Versions.jupiterEngine}")
+            //  dependency("org.junit.jupiter:junit-jupiter-api:${Versions.jupiterApi}")
+            //  dependency("org.junit.jupiter:junit-jupiter-engine:${Versions.jupiterEngine}")
+            dependency("org.openjdk.jmh:jmh-core:${Versions.jmh}")
+            dependency("org.openjdk.jmh:jmh-generator-annprocess:${Versions.jmh}")
+            dependency("org.openjdk.jol:jol-core:${Versions.jol}")
+            dependency("org.ow2.asm:asm-commons:${Versions.asm}")
+            dependency("org.glassfish:javax.json:${Versions.glassfishJson}")
+            dependency("com.google.protobuf:protobuf-java-util:${Versions.protobuf}")
+            dependency("org.flywaydb:flyway-core:${Versions.flyway}")
+            dependency("org.postgresql:postgresql:${Versions.postgresql}")
+            dependency("org.testcontainers:junit-jupiter:${Versions.testcontainers}")
+            dependency("org.testcontainers:postgresql:${Versions.testcontainers}")
         }
     }
 
-     configurations.all {
+    configurations.all {
         resolutionStrategy {
             failOnVersionConflict()
         }
+        resolutionStrategy {
+            force("javax.servlet:servlet-api:2.4")
+            force("commons-logging:commons-logging:1.1.1")
+            force("commons-lang:commons-lang:2.5")
+            force("org.codehaus.jackson:jackson-core-asl:1.8.8")
+            force("org.codehaus.jackson:jackson-mapper-asl:1.8.3")
+            force("org.codehaus.jettison:jettison:1.1")
         }
-
+    }
 }
 
-
+task managedVersions {
+    doLast {
+        dependencyManagement.managedVersions.each {
+            println it
+        }
+    }
+}
