@@ -1,196 +1,113 @@
-
 package hw16_serialization;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.*;
+import java.util.Arrays;
 
 public class MyGson {
-
-    StringBuilder json = new StringBuilder();
+    private final StringBuilder JSON = new StringBuilder();
+    private final List PRIMITIVES = new ArrayList(Arrays.asList("String","Character",
+            "char","Byte","Short","Integer","Long","Float","Double",
+            "Boolean","byte","short","int","long","float","double","boolean"));
     Object obj=null;
 
-    public String toJson(Object obj) {
+    public String toJson(Object obj) throws IllegalAccessException, ClassNotFoundException {
+        JSON.delete(0,JSON.length());
         if (obj == null) {
-            return null;
+            return "null";
         }
         Class<?> clazz = obj.getClass();
-        if(clazz.equals(Byte.class)){
-            return Byte.toString((byte) obj);
+        String type = clazz.getSimpleName();
+
+        if (PRIMITIVES.contains(type)){
+            setElement(type, obj, false);
+            return JSON.toString();
         }
 
-        if (clazz.equals(Short.class)) {
-            return Short.toString((short) obj);
+        if (setMassivesValuesIfAny(clazz, obj, false)){
+            return JSON.toString();
         }
 
-        if (clazz.equals(Integer.class)) {
-            return Integer.toString((int) obj);
-        }
-
-        if (clazz.equals(Long.class)) {
-            return Long.toString((long) obj);
-        }
-
-        if (clazz.equals(Float.class)) {
-            return Float.toString((float) obj);
-        }
-
-        if (clazz.equals(Double.class)) {
-            return Double.toString((double) obj);
-        }
-        if(clazz.equals(Character.class)||clazz.equals(String.class)){
-            return "\""+(String)obj+"\"";
-        }
-        if(clazz.equals(Boolean.class)){
-            return obj.toString();
-        }
         try {
-//            objectStack.push(obj);
             this.obj = obj;
-            json.append("{");
+            JSON.append("{");
 
             for (Field field : obj.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 boolean isTransient = Modifier.isTransient(field.getModifiers());
-                
+
                 if (isTransient) {
                     continue;
                 }
-                json.append("\"").append(field.getName()).append("\":");
+                JSON.append("\"").append(field.getName()).append("\":");
                 if (!setFieldValue(field)) {
-                    System.out.println("not serializable");
+                    System.out.println("not serializable 1");
                     return null;
                 }
             }
-            json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, "");
-            json.append("}");
-            return json.toString();
+            JSON.replace(JSON.lastIndexOf(","), JSON.lastIndexOf(",") + 1, "");
+            JSON.append("}");
+            return JSON.toString();
         } catch (Exception e) {
-            System.out.println("not serializable: "+e.getMessage());
+            System.out.println("not serializable 2: "+e.getMessage());
             return null;
         }
     }
 
     private boolean setFieldValue(Field field)
-            throws IllegalArgumentException, IllegalAccessException {       
-        String type = field.getType().getSimpleName();        
-        switch (type) {
-            case "byte":
-            case "short":
-            case "int":
-            case "double":
-            case "long":
-            case "float":
-            case "boolean":
-                json.append(field.get(obj));
-                break;
-            case "char":
-            case "String":
-                json.append("\"").append(field.get(obj)).append("\"");
-                break;
-            case "byte[]":
-            case "short[]":    
-            case "int[]":
-            case "long[]":
-            case "float[]":
-            case "double[]":
-            case "boolean[]":
-            case "String[]":
-            case "char[]":
-                json.append("[");
-                setArrayValues(field);
-                json.append("]");
-                break;
-            case "ArrayList":
-            case "LinkedList":
-                json.append("[");
-                setListValues(field);
-                json.append("]");
-                break;
-            case "Set":   
-                json.append("[");
-                setSetValues(field);
-                json.append("]");
-                break;
-            case "Queue":
-                json.append("[");
-                setQueueValues(field);
-                json.append("]");
-                break;
-            case "Map":
-                json.append("{");
-                setMapValues(field);
-                json.append("}");
-                break;
-            default:
-                if (field.getType().getCanonicalName().contains("java")) {                 
-                    return false;
-                }
+            throws IllegalArgumentException, IllegalAccessException,ClassNotFoundException {
 
-                Object o = field.get(obj);
-                new MyGson().toJson(o);
-                break;
+        Object o = field.get(obj);
+        Class clazzz = field.getType();
+
+        if (setMassivesValuesIfAny(clazzz, o, true)){return true;};
+
+        String type = field.getType().getSimpleName();
+        if (PRIMITIVES.contains(type)){
+            setElement(type, o, false);
         }
-        json.append(",");
+        else if (field.getType().getCanonicalName().contains("java")) {
+            return false;
+        }
+
+        new MyGson().toJson(o);
+        JSON.append(",");
         return true;
     }
 
-    private void setListValues(Field field) throws IllegalArgumentException, IllegalAccessException {
-        List list =(List) field.get(obj);
-        if (list.size() > 0) {
-            String type = list.get(0).getClass().getSimpleName();          
-            for (int i = 0; i < list.size(); i++) {
-                setElement(type, list.get(i));
-            }
-            json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, "");
+    private boolean setMassivesValuesIfAny(Class clazz, Object o, boolean addComma) throws  IllegalAccessException, ClassNotFoundException {
+        String fin="";
+        if(addComma){fin=fin+",";}
+        if (clazz.getTypeName().contains("[]")) {
+            JSON.append("[");
+            setArrayValues(o);
+            JSON.append("]").append(fin);
+            return true;
         }
+        if (Class.forName("java.util.Collection").isAssignableFrom(clazz)) {
+            JSON.append("[");
+            setCollectionValues(o);
+            JSON.append("]").append(fin);
+            return true;
+        }
+
+        if (Class.forName("java.util.Map").isAssignableFrom(clazz)) {
+            JSON.append("{");
+            setMapValues(o);
+            JSON.append("}").append(fin);
+            return true;
+        }
+        return false;
     }
 
-    private void setMapValues(Field field) throws IllegalArgumentException, IllegalAccessException {
-        Map map = (Map) field.get(obj);
-        if (map.size() > 0) {
-            map.forEach((k,v)->{
-                json.append("\"").append(k).append("\":");
-                setElement(v.getClass().getSimpleName(),v);
-                });       
-        } json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, ""); 
-    }
-    
-    private void setSetValues(Field field) throws IllegalArgumentException, IllegalAccessException{
-        Set set=(Set)field.get(obj);
-        if(set.size()>0){
-            set.forEach(e->{
-            setElement(e.getClass().getSimpleName(),e);
-            });
-        }json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, "");
-    }
-    
-    private void setArrayValues(Field field)
-            throws IllegalArgumentException, IllegalAccessException {
-        Object o = field.get(obj);
-        String type = o.getClass().getComponentType().getSimpleName();
-        
-        int length = Array.getLength(o);
-        for (int i = 0; i < length; i++) {
-            setElement(type, Array.get(o, i));
-        }json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, "");
-    }
-    public void setQueueValues(Field field) throws IllegalArgumentException, IllegalAccessException{
-        Queue queue=(Queue)field.get(obj);
-        if(queue.size()>0){
-            queue.forEach(e->{
-            setElement(e.getClass().getSimpleName(),e);
-            });
-        }json.replace(json.lastIndexOf(","), json.lastIndexOf(",") + 1, "");
-        
-    }
-    private void setElement(String type, Object o) {
+    private void setElement(String type, Object o, boolean addComma) {
+        String fin = "";
+        if(addComma){fin = fin + ",";}
         switch (type) {
             case "String":
             case "Character":
             case "char":
-                json.append("\"").append(o).append("\",");
+                JSON.append("\"").append(o).append("\"").append(fin);
                 break;
             case "Byte":
             case "Short":
@@ -206,10 +123,40 @@ public class MyGson {
             case "float":
             case "double":
             case "boolean":
-                json.append(o).append(",");
+                JSON.append(o).append(fin);
                 break;
             default:
                 break;
         }
+    }
+
+    private void setCollectionValues(Object oColl) throws IllegalArgumentException, IllegalAccessException {
+        Collection coll = (Collection) oColl;
+
+        if (coll.size() > 0) {
+            coll.stream().forEach(c -> setElement(c.getClass().getSimpleName(),c, true));
+        }
+        JSON.replace(JSON.lastIndexOf(","), JSON.lastIndexOf(",") + 1, "");
+    }
+
+    private void setArrayValues(Object oArr)
+            throws IllegalArgumentException, IllegalAccessException {
+        Object o = oArr;
+        String type = o.getClass().getComponentType().getSimpleName();
+        int length = Array.getLength(o);
+        for (int i = 0; i < length; i++) {
+            setElement(type, Array.get(o, i),true);
+        }
+        JSON.replace(JSON.lastIndexOf(","), JSON.lastIndexOf(",") + 1, "");
+    }
+
+    private void setMapValues(Object oMap) throws IllegalArgumentException, IllegalAccessException {
+        Map map = (Map) oMap;
+        if (map.size() > 0) {
+            map.forEach((k,v)->{
+                JSON.append("\"").append(k).append("\":");
+                setElement(v.getClass().getSimpleName(), v, true);
+            });
+        } JSON.replace(JSON.lastIndexOf(","), JSON.lastIndexOf(",") + 1, "");
     }
 }

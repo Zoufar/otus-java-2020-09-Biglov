@@ -10,21 +10,21 @@ public class AniObject {
     boolean valueBoolean;
     String value3;
     int[] valueArray;
-    ArrayList<Double> valueArrList;
+    List<Double> valueList;
     Set<String> valueSet;
     Map<String, Double> valueMap;
 
     transient LocalDate dateToDate;
 
     public AniObject(int value1, float value2, boolean valueBoolean, String value3,
-                     int[] valueArray, ArrayList<Double> valueArrList,
+                     int[] valueArray, List<Double> valueList,
                      Set<String> valueSet, Map<String, Double> valueMap) {
         this.value1 = value1;
         this.value2 = value2;
         this.valueBoolean = valueBoolean;
         this.value3 = value3;
         this.valueArray = valueArray;
-        this.valueArrList = valueArrList;
+        this.valueList = valueList;
         this.valueSet = valueSet;
         this.valueMap = valueMap;
         dateToDate = LocalDate.now();
@@ -34,7 +34,7 @@ public class AniObject {
     public String toString() {
         return "AnyObject [ value1 = " + value1 + ", value2 = " + value2 + ", valueBoolean = " + valueBoolean
                 + ", value3 = " + value3 + ", valueArray =" + Arrays.toString(valueArray)
-                + ", valueArrList = " + valueArrList  + ", valueSet = " + valueSet
+                + ", valueList = " + valueList  + ", valueSet = " + valueSet
                 + ", valueMap = " + valueMap
                 + ", date = " + dateToDate + "]"
                 ;
@@ -54,7 +54,7 @@ public class AniObject {
                 valueBoolean == that.valueBoolean &&
                 (Objects.equals(value3, that.value3)) &&
                 Arrays.equals(valueArray, that.valueArray) &&
-                Objects.equals(valueArrList, that.valueArrList) &&
+                Objects.equals(valueList, that.valueList) &&
                 Objects.equals(valueSet, that.valueSet) &&
                 Objects.equals(valueMap, that.valueMap) ;
     }
@@ -68,7 +68,7 @@ public class AniObject {
                 + (valueBoolean == that.valueBoolean)
                 + Objects.equals(value3, that.value3)
                 + Arrays.equals(valueArray, that.valueArray)
-                + Objects.equals(valueArrList, that.valueArrList)
+                + Objects.equals(valueList, that.valueList)
                 + Objects.equals(valueSet, that.valueSet)
                 + Objects.equals(valueMap, that.valueMap);
     }

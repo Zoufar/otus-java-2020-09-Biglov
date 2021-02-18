@@ -7,7 +7,8 @@ import java.util.*;
 
 public class MyGsonDemo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+            throws IllegalAccessException,ClassNotFoundException {
 
         int value1 = 42;
         float value2 = 3.14f;
@@ -40,6 +41,6 @@ public class MyGsonDemo {
         System.out.println("equals? "+ anyObject.equals(reAniObject)+ "\n");
 
         System.out.println("Gsoned null: " + gson.toJson(null));
-        System.out.println("MyGsoned null: " + new MyGson().toJson(null));
+        System.out.println("MyGsoned null: " + myGson.toJson(null));
     }
 }
