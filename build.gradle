@@ -29,6 +29,7 @@ allprojects {
             imports {
                 mavenBom("org.springframework.boot:spring-boot-dependencies:2.4.1")
             }
+            dependency( "com.google.code.gson:gson:${Versions.gson}")
             dependency("com.google.guava:guava:${Versions.guava}")
             //  dependency("org.junit.jupiter:junit-jupiter-api:${Versions.jupiterApi}")
             //  dependency("org.junit.jupiter:junit-jupiter-engine:${Versions.jupiterEngine}")
