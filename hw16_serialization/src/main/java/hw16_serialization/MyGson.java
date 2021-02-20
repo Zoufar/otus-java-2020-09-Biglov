@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class MyGson {
     private final StringBuilder JSON = new StringBuilder();
-    private final List PRIMITIVES = new ArrayList(Arrays.asList("String","Character",
+    private final List<String> PRIMITIVES = new ArrayList<>(Arrays.asList("String","Character",
             "char","Byte","Short","Integer","Long","Float","Double",
             "Boolean","byte","short","int","long","float","double","boolean"));
     Object obj=null;
