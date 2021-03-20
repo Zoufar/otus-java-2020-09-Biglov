@@ -22,5 +22,15 @@ public interface Versions{
     String neo4j = "4.2.0";
     String jedis = "3.4.0";
 
+    String jetty = "11.0.0";
+    //    String jetty = "9.4.35.v20201120";
+//    String jetty = "9.4.31.v20200723";
+    String freemarker = "2.3.30";
+    String reflections = "0.9.12";
+
+    String sockjs = "1.1.2";
+    String stomp = "2.3.3-1";
+    String bootstrap = "4.4.1-1";
+    String netty = "4.1.53.Final";
 
 }
