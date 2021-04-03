@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Администрирование</title>
+</head>
+
+<body>
+<div class="top">
+    <br/>
+    <form action="save" method="post">
+        <label>
+            name <br/>
+            <input type="text" name="name" value="">
+        </label>
+        <br/>
+        <label>
+            login <br/>
+            <input type="text" name="login" value="">
+        </label>
+        <br/>
+        <label>
+            password<br/>
+            <input type="password" name="password" value="">
+        </label>
+        <br/><br/>
+        <input type="submit" value="Добавить к списку пользователей">
+    </form>
+</div>
+
+<br/><br/>
+<a href="users">Перейти на страницу информации о пользователях (возможно защищено паролем)</a>
+<br/><br/>
+
+<table style="width: 400px">
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 150px">Имя</td>
+        <td style="width: 100px">Логин</td>
+        <td style="width: 100px">Пароль</td>
+    </tr>
+    </thead>
+    <tbody>
+    <#list users as row>
+    <tr>
+        <#list row as field>
+            <td>${field}</td>
+        </#list>
+    </tr>
+    </#list>>
+    </tbody>
+</table>
+
+</body>
+</html>
