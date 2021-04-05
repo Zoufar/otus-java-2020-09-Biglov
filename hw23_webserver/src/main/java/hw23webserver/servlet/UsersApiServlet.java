@@ -12,7 +12,9 @@ import java.io.IOException;
 import hw23webserver.core.service.DBServiceUser;
 
 
-public class UsersApiServlet extends HttpServlet {
+public class UsersApiServlet
+       extends HttpServlet
+{
 
     private static final int ID_PATH_PARAM_POSITION = 1;
 
@@ -38,5 +40,7 @@ public class UsersApiServlet extends HttpServlet {
         String id = (path.length > 1)? path[ID_PATH_PARAM_POSITION]: String.valueOf(- 1);
         return Long.parseLong(id);
     }
+
+
 
 }

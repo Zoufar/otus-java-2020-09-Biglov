@@ -6,6 +6,7 @@ import hw23webserver.core.sessionmanager.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -87,17 +88,17 @@ public class DbServiceUserImpl implements DBServiceUser {
     }
 
     @Override
-    public List<Optional<User>> getAllUsers () {
+    public List<User> getAllUsers () {
         try (SessionManager sessionManager = userDbDao.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                List<Optional<User>> usersOptional = userDbDao.findAll();
-                return usersOptional;
+                List<User> users = userDbDao.findAll();
+                return users;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 sessionManager.rollbackSession();
             }
-            return Collections.singletonList(Optional.empty());
+            return new ArrayList<User>();
         }
     }
 }

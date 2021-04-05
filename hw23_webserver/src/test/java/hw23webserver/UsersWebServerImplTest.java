@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import hw23webserver.core.service.DbServiceUserImpl;
 import org.junit.jupiter.api.*;
-import hw23webserver.dao.UserDao;
+
 import hw23webserver.core.service.DBServiceUser;
 
 import hw23webserver.model.User;

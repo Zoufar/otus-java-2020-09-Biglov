@@ -12,10 +12,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserDbDaoHibernate implements UserDbDao {
@@ -107,19 +104,16 @@ public class UserDbDaoHibernate implements UserDbDao {
         }
     }
 
-    public List<Optional<User>> findAll() {
+    public List<User> findAll() {
         DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
         try {
             var query = currentSession.getHibernateSession().
                     createQuery("select u from User u", User.class);
-            List <User> users = query.getResultList();
-
-            return users.stream().map(usr -> Optional.ofNullable(usr)).
-                    collect(Collectors.toList());
+            return query.getResultList();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return Collections.singletonList(Optional.empty());
+        return new ArrayList<User>();
     }
 
     @Override

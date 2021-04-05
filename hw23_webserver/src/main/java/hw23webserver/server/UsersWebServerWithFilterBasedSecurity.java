@@ -11,7 +11,6 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import hw23webserver.helpers.FileSystemHelper;
 import hw23webserver.services.TemplateProcessor;
 import hw23webserver.servlet.UsersApiServlet;
-import hw23webserver.servlet.UsersServlet;
 import hw23webserver.services.UserAuthService;
 import hw23webserver.servlet.AuthorizationFilter;
 import hw23webserver.servlet.LoginServlet;
@@ -74,7 +73,7 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
 
         HandlerList handlers = new HandlerList();
         handlers.addHandler(resourceHandler);
-        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*", "/admin"));
+        handlers.addHandler(applySecurity(servletContextHandler,"/api/user/*","/admin"));
 
 
         server.setHandler(handlers);
@@ -98,7 +97,6 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, dbServiceUser)), "/users");
         servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(dbServiceUser, gson)), "/api/user/*");
         servletContextHandler.addServlet(new ServletHolder(new AdminServlet(templateProcessor, dbServiceUser)), "/admin");
         servletContextHandler.addServlet(new ServletHolder(new SaveUserServlet(templateProcessor, dbServiceUser)), "/save");

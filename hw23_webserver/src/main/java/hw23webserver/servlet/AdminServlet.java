@@ -36,11 +36,7 @@ public class AdminServlet extends HttpServlet {
                                             throws IOException {
         Map<String, Object> paramsMap = new HashMap<>();
 
-        List <List> users = new ArrayList<>();
-        dbServiceUser.getAllUsers().stream().map(usOpt -> usOpt.orElse(USER_SUB))
-                .map(usr -> Arrays.asList(usr.getId(), usr.getName(),usr.getLogin(), usr.getPassword()))
-                .forEachOrdered(list -> users.add(list));
-        paramsMap.put("users", users);
+        paramsMap.put("users", dbServiceUser.getAllUsers());
 
         response.setContentType("text/html");
         response.getWriter().println(templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, paramsMap));

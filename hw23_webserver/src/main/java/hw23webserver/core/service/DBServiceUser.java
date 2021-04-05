@@ -15,6 +15,6 @@ public interface DBServiceUser {
 
     Optional<User> getRandomUser ();
 
-    List<Optional<User>> getAllUsers ();
+    List<User> getAllUsers ();
 
 }

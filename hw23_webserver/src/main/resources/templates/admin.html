@@ -26,10 +26,6 @@
     </form>
 </div>
 
-<br/><br/>
-<a href="users">Перейти на страницу информации о пользователях (возможно защищено паролем)</a>
-<br/><br/>
-
 <table style="width: 400px">
     <thead>
     <tr>
@@ -42,9 +38,10 @@
     <tbody>
     <#list users as row>
     <tr>
-        <#list row as field>
-            <td>${field}</td>
-        </#list>
+        <td>${row.id}</td>
+        <td>${row.name}</td>
+        <td>${row.login}</td>
+        <td>${row.password}</td>
     </tr>
     </#list>>
     </tbody>
