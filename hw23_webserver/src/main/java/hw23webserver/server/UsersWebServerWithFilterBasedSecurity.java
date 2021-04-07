@@ -1,6 +1,5 @@
 package hw23webserver.server;
 
-import com.google.gson.Gson;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -10,7 +9,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import hw23webserver.helpers.FileSystemHelper;
 import hw23webserver.services.TemplateProcessor;
-import hw23webserver.servlet.UsersApiServlet;
 import hw23webserver.services.UserAuthService;
 import hw23webserver.servlet.AuthorizationFilter;
 import hw23webserver.servlet.LoginServlet;
@@ -26,7 +24,6 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
     private static final String COMMON_RESOURCES_DIR = "static";
 
     private final DBServiceUser dbServiceUser;
-    private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
 
@@ -37,11 +34,9 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
     public UsersWebServerWithFilterBasedSecurity(int port,
                                                  UserAuthService authService,
                                                  DBServiceUser dbServiceUser,
-                                                 Gson gson,
                                                  TemplateProcessor templateProcessor) {
 
         this.dbServiceUser = dbServiceUser;
-        this.gson = gson;
         this.templateProcessor = templateProcessor;
         server = new Server(port);
         this.authService = authService;
@@ -73,7 +68,7 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
 
         HandlerList handlers = new HandlerList();
         handlers.addHandler(resourceHandler);
-        handlers.addHandler(applySecurity(servletContextHandler,"/api/user/*","/admin"));
+        handlers.addHandler(applySecurity(servletContextHandler,"/user/save","/admin"));
 
 
         server.setHandler(handlers);
@@ -97,9 +92,9 @@ public class UsersWebServerWithFilterBasedSecurity implements UsersWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(dbServiceUser, gson)), "/api/user/*");
+//        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(dbServiceUser, gson)), "/api/user/*");
         servletContextHandler.addServlet(new ServletHolder(new AdminServlet(templateProcessor, dbServiceUser)), "/admin");
-        servletContextHandler.addServlet(new ServletHolder(new SaveUserServlet(templateProcessor, dbServiceUser)), "/save");
+        servletContextHandler.addServlet(new ServletHolder(new SaveUserServlet(templateProcessor, dbServiceUser)), "/user/save");
 
         return servletContextHandler;
     }

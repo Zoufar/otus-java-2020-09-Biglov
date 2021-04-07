@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 public class MigrationsExecutorFlyway {
     private static final Logger logger = LoggerFactory.getLogger(MigrationsExecutorFlyway.class);
 
-    private static Flyway flyway;
+    private Flyway flyway;
 
     public MigrationsExecutorFlyway(String dbUrl, String dbUserName, String dbPassword) {
         flyway = Flyway.configure()
@@ -20,7 +20,7 @@ public class MigrationsExecutorFlyway {
         flyway.clean();
     }
 
-    public static void executeMigrations() {
+    public void executeMigrations() {
         logger.info("db migration started...");
         flyway.migrate();
         logger.info("db migration finished.");

@@ -27,13 +27,15 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
 
-        provideResponseUserList ( response, templateProcessor, dbServiceUser);
+/*        provideResponseUserList ( response, templateProcessor, dbServiceUser);
     }
 
     public static void provideResponseUserList ( HttpServletResponse response,
                                                  TemplateProcessor templateProcessor,
                                                  DBServiceUser dbServiceUser)
                                             throws IOException {
+
+ */
         Map<String, Object> paramsMap = new HashMap<>();
 
         paramsMap.put("users", dbServiceUser.getAllUsers());

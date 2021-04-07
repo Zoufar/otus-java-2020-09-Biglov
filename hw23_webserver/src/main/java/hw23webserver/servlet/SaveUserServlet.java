@@ -13,7 +13,6 @@ import hw23webserver.core.service.DBServiceUser;
 import java.io.IOException;
 import java.util.*;
 
-import static hw23webserver.servlet.AdminServlet.provideResponseUserList;
 
 public class SaveUserServlet extends HttpServlet {
 
@@ -34,11 +33,6 @@ public class SaveUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        provideResponseUserList ( response, templateProcessor, dbServiceUser);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String name = request.getParameter(PARAM_NAME);
@@ -54,7 +48,7 @@ public class SaveUserServlet extends HttpServlet {
             dbServiceUser.saveUser(userF);
         }
 
-        provideResponseUserList ( response, templateProcessor, dbServiceUser);
+        response.sendRedirect("/admin");;
 
     }
 
