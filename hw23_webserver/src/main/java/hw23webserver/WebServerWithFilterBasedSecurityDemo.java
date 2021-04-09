@@ -8,10 +8,7 @@ import hw23webserver.hibernate.sessionmanager.SessionManagerHibernate;
 import hw23webserver.model.User;
 import hw23webserver.server.UsersWebServer;
 import hw23webserver.server.UsersWebServerWithFilterBasedSecurity;
-import hw23webserver.services.TemplateProcessor;
-import hw23webserver.services.TemplateProcessorImpl;
-import hw23webserver.services.UserAuthService;
-import hw23webserver.services.UserAuthServiceImpl;
+import hw23webserver.services.*;
 import hw23webserver.core.service.DBServiceUser;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -61,7 +58,7 @@ public class WebServerWithFilterBasedSecurityDemo {
         UsersWebServer usersWebServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT,
                 authService, dbServiceUser, templateProcessor);
 
-        dbServiceUser.saveUser(new User("user1", "user1", "11111"));
+        new InitDbService(dbServiceUser).initDbData(new User("user1", "user1", "11111"));
 
         usersWebServer.start();
         usersWebServer.join();
