@@ -20,10 +20,10 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         // Опциональные варианты
-        AppComponentsContainer container = new AppComponentsContainerImpl(AppConfig1.class, AppConfig2.class);
+        //AppComponentsContainer container = new AppComponentsContainerImpl(AppConfig1.class, AppConfig2.class);
 
         // Тут можно использовать библиотеку Reflections (см. зависимости)
-        //AppComponentsContainer container = new AppComponentsContainerImpl("hw24di.config2");
+        AppComponentsContainer container = new AppComponentsContainerImpl("hw24di.config2");
 
         // Обязательный вариант
         //AppComponentsContainer container = new AppComponentsContainerImpl(AppConfig.class);
