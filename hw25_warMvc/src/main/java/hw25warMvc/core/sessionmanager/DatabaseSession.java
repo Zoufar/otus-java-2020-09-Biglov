@@ -1,4 +1,4 @@
-package hw23webserver.core.sessionmanager;
+package hw25warMvc.core.sessionmanager;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;

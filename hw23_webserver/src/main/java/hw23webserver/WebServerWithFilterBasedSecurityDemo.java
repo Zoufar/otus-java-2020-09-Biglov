@@ -2,6 +2,7 @@ package hw23webserver;
 
 import hw23webserver.core.dao.UserDbDao;
 import hw23webserver.core.service.DbServiceUserImpl;
+import hw23webserver.core.sessionmanager.SessionManager;
 import hw23webserver.hibernate.HibernateUtils;
 import hw23webserver.hibernate.dao.UserDbDaoHibernate;
 import hw23webserver.hibernate.sessionmanager.SessionManagerHibernate;
@@ -36,7 +37,7 @@ public class WebServerWithFilterBasedSecurityDemo {
     public static void main(String[] args) throws Exception {
 
         Configuration configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
-
+/*
         String dbUrl = configuration.getProperty("hibernate.connection.url");
         String dbUserName = configuration.getProperty("hibernate.connection.username");
         String dbPassword = configuration.getProperty("hibernate.connection.password");
@@ -44,11 +45,11 @@ public class WebServerWithFilterBasedSecurityDemo {
         MigrationsExecutorFlyway migration = new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword);
         migration.cleanDb();
         migration.executeMigrations();
-
+*/
         SessionFactory sessionFactory = HibernateUtils.buildSessionFactory(configuration,
                 new Class[]{User.class});
 
-        SessionManagerHibernate sessionManager = new SessionManagerHibernate(sessionFactory);
+        SessionManager sessionManager = new SessionManagerHibernate(sessionFactory);
         UserDbDao userDbDao = new UserDbDaoHibernate(sessionManager);
         DBServiceUser dbServiceUser = new DbServiceUserImpl(userDbDao);
 
