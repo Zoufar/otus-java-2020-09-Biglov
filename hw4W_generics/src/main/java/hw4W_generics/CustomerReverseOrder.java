@@ -11,8 +11,7 @@ public class CustomerReverseOrder {
 
     private final LinkedList <Customer> list = new LinkedList<>();
 
-
-            public void add(Customer customer) {
+    public void add(Customer customer) {
         list.add(customer);
     }
 

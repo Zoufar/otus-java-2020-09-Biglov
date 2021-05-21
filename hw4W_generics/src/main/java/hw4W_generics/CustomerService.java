@@ -11,45 +11,36 @@ public class CustomerService {
     //важно подобрать подходящую Map-у, посмотрите на редко используемые методы, они тут полезны
 
     private final TreeMap <Customer, String> treeMap = new TreeMap<>(Comparator.comparingLong(cust -> cust.getScores()));
-//         (cust -> cust.getScores()%488L)
+
     public Map.Entry<Customer, String> getSmallest() {
         Map.Entry<Customer, String> smallest = treeMap.firstEntry();
         if (smallest != null) {
         Customer customerIn = new Customer(smallest.getKey().getId(),
                                        smallest.getKey().getName(),
                                          smallest.getKey().getScores());
-        String data = smallest.getValue() + "-ha";
-
+        String data = smallest.getValue();
         treeMap.remove(smallest.getKey());
-        treeMap.put(customerIn, data);}
-
-        System.out.println(treeMap);
-        System.out.println("smallests = " + smallest + "\n");
-     //   System.out.println("inner smallest changed = " + treeMap.firstEntry().getKey() + "data = "
-//                + treeMap.firstEntry().getValue() + "\n");
-
-        //Возможно, чтобы реализовать этот метод, потребуется посмотреть как Map.Entry сделан в jdk
-        return smallest; // это "заглушка, чтобы скомилировать"
+        treeMap.put(customerIn, data);
+        }
+        return smallest;
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {
         Map.Entry<Customer, String> nextEntry = treeMap.higherEntry(customer);
         if (nextEntry != null) {
-
         Customer customerIn = new Customer(nextEntry.getKey().getId(),
                 nextEntry.getKey().getName(),
                 nextEntry.getKey().getScores());
-        String data = nextEntry.getValue() + "-ha";
+        String data = nextEntry.getValue();
 
         treeMap.remove(nextEntry.getKey());
-        treeMap.put(customerIn, data);}
-
-        System.out.println(treeMap + "\n");
-
-        return nextEntry; // это "заглушка, чтобы скомилировать"
+        treeMap.put(customerIn, data);
+        }
+        return nextEntry;
     }
 
     public void add(Customer customer, String data) {
-        treeMap.put(new Customer(customer.getId(), customer.getName(), customer.getScores()),data);
+        treeMap.put(new Customer(customer.getId(), customer.getName(),
+                                 customer.getScores()),data);
     }
 }
