@@ -1,11 +1,12 @@
-package hw23webserver.hibernate.dao;
+package hw25warMvc.hibernate.dao;
 
-import hw23webserver.core.dao.UserDbDao;
-import hw23webserver.core.dao.UserDbDaoException;
-import hw23webserver.core.sessionmanager.DatabaseSession;
-import hw23webserver.model.User;
-import hw23webserver.core.sessionmanager.SessionManager;
-import hw23webserver.hibernate.sessionmanager.DatabaseSessionHibernate;
+import hw25warMvc.core.dao.UserDbDao;
+import hw25warMvc.core.dao.UserDbDaoException;
+import hw25warMvc.core.sessionmanager.DatabaseSession;
+import hw25warMvc.model.User;
+import hw25warMvc.core.sessionmanager.SessionManager;
+import hw25warMvc.hibernate.sessionmanager.DatabaseSessionHibernate;
+import hw25warMvc.hibernate.sessionmanager.SessionManagerHibernate;
 
 import org.hibernate.Session;
 
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserDbDaoHibernate implements UserDbDao {
     private static final Logger logger = LoggerFactory.getLogger(UserDbDaoHibernate.class);
@@ -40,8 +42,8 @@ public class UserDbDaoHibernate implements UserDbDao {
             var query = currentSession.getSession().
                     createQuery("select u from User u", User.class);
             List <User> users = query.getResultList();
-        Random r = new Random();
-        return users.stream().skip(r.nextInt(users.size() - 1)).findFirst();
+            Random r = new Random();
+            return users.stream().skip(r.nextInt(users.size() - 1)).findFirst();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -56,7 +58,7 @@ public class UserDbDaoHibernate implements UserDbDao {
             query.setParameter("login", login);
             List <User> users = query.getResultList();
             return users.stream().filter(v -> v.getLogin().equals(login)).findFirst();
-            } catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return Optional.empty();

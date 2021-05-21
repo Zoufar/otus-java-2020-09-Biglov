@@ -1,7 +1,7 @@
-package hw23webserver.hibernate.sessionmanager;
+package hw25warMvc.hibernate.sessionmanager;
 
-import hw23webserver.core.sessionmanager.SessionManager;
-import hw23webserver.core.sessionmanager.SessionManagerException;
+import hw25warMvc.core.sessionmanager.SessionManager;
+import hw25warMvc.core.sessionmanager.SessionManagerException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

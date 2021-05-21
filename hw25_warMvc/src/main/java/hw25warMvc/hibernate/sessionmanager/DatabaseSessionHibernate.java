@@ -1,6 +1,6 @@
-package hw23webserver.hibernate.sessionmanager;
+package hw25warMvc.hibernate.sessionmanager;
 
-import hw23webserver.core.sessionmanager.DatabaseSession;
+import hw25warMvc.core.sessionmanager.DatabaseSession;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -32,3 +32,4 @@ public class DatabaseSessionHibernate implements DatabaseSession {
         session.close();
     }
 }
+
