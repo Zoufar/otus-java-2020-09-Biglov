@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Starting page</title>
+
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        a {
+            display: block;
+        }
+
+        input {
+            width: 150px;
+        }
+
+
+        select {
+            width: 154px;
+        }
+
+        button {
+            width: 250px;
+        }
+
+        h3 {
+            background: url([[@{/logoOTUSmin.png}]]) no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+
+    <style th:inline="text">
+        h3 {
+            background: url([[@{/logoOTUSmin.png}]]) no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+<h3>Добро пожаловать на стартовую страницу!</h3>
+
+
+<br/>
+<br/>
+<a th:href="@{/client/list}" href="clientsList.html">Посмотреть список пользователей</a>

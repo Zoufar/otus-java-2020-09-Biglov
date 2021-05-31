@@ -45,7 +45,7 @@ allprojects {
             dependency("org.testcontainers:postgresql:${Versions.testcontainers}")
 
             dependency("io.netty:netty-all:${Versions.netty}")
-
+            dependency("com.google.code.findbugs:jsr305:${Versions.jsr305}")
         }
     }
 
