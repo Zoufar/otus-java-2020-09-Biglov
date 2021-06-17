@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of all clients</title>
+    <meta charset="UTF-8"/>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .clients, .clients td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+        }
+
+        input {
+            width: 150px;
+        }
+
+
+        select {
+            width: 154px;
+        }
+
+        button {
+            width: 250px;
+        }
+
+    </style>
+
+     <script type="text/JavaScript">
+        function getClientBDList() {
+            const stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
+            stompClient.connect({}, (frame) => {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/getClientBDList', (message) => showMessage(JSON.parse(message.body)));
+                stompClient.send("/app/getClientBDList", {}, "hi there");
+            });
+        }
+        const showMessage = (message) => {
+            for(let i=0; i < message.length; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = "<td>" + message[i].id + "</td> <td>" + message[i].name + "</td><td>" + message[i].login + "</td> <td>" + message[i].password + "</td>";
+                document.querySelector('.clientList').appendChild(row);
+            }
+        }
+    </script>
+
+</head>
+<body onload="getClientBDList();">
+<br>
+<br>
+<a href="clientCreateWs.html">Создать запись нового пользователя</a>
+<br>
+<br>
+<a >СПИСОК ПОЛЬЗОВАТЕЛЕЙ</a>
+<table class="clients">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Имя</th>
+        <th>Логин</th>
+        <th>Пароль</th>
+    </tr>
+    </thead>
+    <tbody class="clientList"> </tbody>
+</table>
+
+</body>
+</html>

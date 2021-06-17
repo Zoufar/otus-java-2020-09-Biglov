@@ -17,3 +17,6 @@ include 'hw25_warMvc'
 include 'hw4W_generics'
 include 'hw16W_io'
 include 'hw28W_springDataJdbc'
+
+include 'hw32_messagingSystem:SpringBootJdbc'
+include 'hw32_messagingSystem:MessageSystem'

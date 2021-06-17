@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.4.5'
+//    id 'com.github.johnrengelman.shadow'
+}
+
+sourceCompatibility = JavaVersion.VERSION_15
+targetCompatibility = JavaVersion.VERSION_15
+
+dependencies {
+    implementation project(':hw32_messagingSystem:MessageSystem')
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.postgresql:postgresql'
+
+    implementation 'com.google.code.findbugs:jsr305'
+
+    implementation("com.google.code.gson:gson:${Versions.gson}")
+
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:sockjs-client")
+    implementation("org.webjars:stomp-websocket")
+    implementation("org.webjars:bootstrap")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+/*
+shadowJar {
+    archiveBaseName.set('hw28W_springDataJdbc-Main')
+    archiveVersion.set('0.1')
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'hw28W_springDataJdbc.Main'
+    }
+}
+*/
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}
+
+// tasks.build.dependsOn tasks.shadowJar
