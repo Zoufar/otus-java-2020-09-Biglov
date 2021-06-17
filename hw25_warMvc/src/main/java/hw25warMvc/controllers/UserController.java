@@ -20,8 +20,8 @@ public class UserController {
             this.dbServiceUser = dbServiceUser;
         }
 
-    @GetMapping({"/"})
-    public String startingPageView () {
+        @GetMapping({"/"})
+        public String startingPageView () {
         return "index.html";
     }
 
