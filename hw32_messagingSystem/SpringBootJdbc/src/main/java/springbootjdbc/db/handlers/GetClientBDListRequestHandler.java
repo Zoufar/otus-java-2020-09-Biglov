@@ -17,10 +17,12 @@ public class GetClientBDListRequestHandler implements RequestHandler<ClientBD> {
 
     private final DBServiceClient dbServiceClient;
     public final List <ClientBD> clientBDList;
+    private int idx;
 
     public GetClientBDListRequestHandler(DBServiceClient dbServiceClient) {
         this.dbServiceClient = dbServiceClient;
         clientBDList = dbServiceClient.findAll();
+        idx = 0;
     }
 
     @Override
@@ -28,14 +30,18 @@ public class GetClientBDListRequestHandler implements RequestHandler<ClientBD> {
         ClientBD clientBD = MessageHelper.getPayload(msg);
         long clientId = clientBD.getId();
        if (clientId == 0) {
+           idx = 0;
            clientBDList.clear();
            clientBDList.addAll(dbServiceClient.findAll());
              }
-        if (clientId >= clientBDList.size()){
+        if ( idx >= clientBDList.size()){
             ClientBD data = new ClientBD(-1L, null, null, null);
             return Optional.of(MessageBuilder.buildReplyMessage(msg, data));
         }
-        ClientBD data = clientBDList.get((int) clientId);
+        ClientBD data = clientBDList.get( idx );
+
+        idx +=1;
+
         return Optional.of(MessageBuilder.buildReplyMessage(msg, data));
     }
 }
