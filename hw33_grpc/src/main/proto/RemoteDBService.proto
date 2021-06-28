@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package protobuf.generated;
+
+option java_multiple_files = true;
+
+message NumberMessage {
+    int64 firstNumber = 1;
+    int64 secondNumber  = 2;
+}
+
+service RemoteDBService {
+    rpc findAllNumbers (NumberMessage) returns (stream NumberMessage);
+}

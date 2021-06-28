@@ -20,3 +20,5 @@ include 'hw28W_springDataJdbc'
 
 include 'hw32_messagingSystem:SpringBootJdbc'
 include 'hw32_messagingSystem:MessageSystem'
+
+include 'hw33_grpc'
